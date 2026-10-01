@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: ms-pedidos360-notify-test
+  rabbitmq:
+    host: localhost
+    port: 5672
+    listener:
+      simple:
+        auto-startup: false
+  mail:
+    host: localhost
+    port: 1025
+
+pedidos360:
+  mail:
+    from: test@pedidos360.com
+    sender-name: Test Pedidos360
+  retry:
+    max-attempts: 2
+    backoff-ms: 10
+  idempotency:
+    ttl-hours: 1
+    max-entries: 100

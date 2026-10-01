@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "InvoiceCommandMessage",
+  "description": "Mensaje publicado en la cola q.cmd.invoice para generación de boleta/factura en PDF y despacho adjunto por correo",
+  "type": "object",
+  "required": ["type", "eventId", "timestamp", "traceId", "correlationId", "payload"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "example": "cmd.invoice.generate"
+    },
+    "eventId": {
+      "type": "string",
+      "format": "uuid",
+      "example": "f7d983c2-12ef-4573-b789-99443210abcd"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2026-10-01T15:32:00Z"
+    },
+    "traceId": {
+      "type": "string",
+      "example": "4bf92f3577b34da6a3ce929d0e0e4736"
+    },
+    "correlationId": {
+      "type": "string",
+      "example": "corr-pedidos-8921"
+    },
+    "payload": {
+      "type": "object",
+      "required": ["orderId", "invoiceNumber", "customer", "items", "currency", "subtotal", "tax", "total"],
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "example": "PED-1024"
+        },
+        "invoiceNumber": {
+          "type": "string",
+          "example": "BOL-2026-00451"
+        },
+        "invoiceType": {
+          "type": "string",
+          "enum": ["BOLETA", "FACTURA"],
+          "default": "BOLETA"
+        },
+        "issueDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2026-10-01T15:30:00Z"
+        },
+        "customer": {
+          "type": "object",
+          "required": ["name", "email"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Sofía Morales"
+            },
+            "taxId": {
+              "type": "string",
+              "example": "18.765.432-1"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "example": "cliente.cafe@example.com"
+            },
+            "address": {
+              "type": "string",
+              "example": "Av. Providencia 1234, Santiago"
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["description", "quantity", "unitPrice", "totalPrice"],
+            "properties": {
+              "description": {
+                "type": "string",
+                "example": "Café Grano Geisha 250g - Origen Huila"
+              },
+              "quantity": {
+                "type": "integer",
+                "minimum": 1,
+                "example": 2
+              },
+              "unitPrice": {
+                "type": "number",
+                "minimum": 0,
+                "example": 7500.00
+              },
+              "totalPrice": {
+                "type": "number",
+                "minimum": 0,
+                "example": 15000.00
+              }
+            }
+          }
+        },
+        "currency": {
+          "type": "string",
+          "example": "CLP"
+        },
+        "subtotal": {
+          "type": "number",
+          "minimum": 0,
+          "example": 15000.00
+        },
+        "tax": {
+          "type": "number",
+          "minimum": 0,
+          "example": 2850.00
+        },
+        "total": {
+          "type": "number",
+          "minimum": 0,
+          "example": 17850.00
+        }
+      }
+    }
+  }
+}

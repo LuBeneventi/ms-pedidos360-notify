@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: ms-pedidos360-notify
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        acknowledge-mode: manual
+        default-requeue-rejected: false
+
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${SMTP_AUTH:false}
+          starttls:
+            enable: ${SMTP_STARTTLS:false}
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+pedidos360:
+  mail:
+    from: ${MAIL_FROM:notificaciones@pedidos360.com}
+    sender-name: ${MAIL_SENDER_NAME:Pedidos360 Café}
+  retry:
+    max-attempts: ${MAX_RETRY_ATTEMPTS:3}
+    backoff-ms: ${RETRY_BACKOFF_MS:1000}
+  idempotency:
+    ttl-hours: ${IDEMPOTENCY_TTL_HOURS:24}
+    max-entries: ${IDEMPOTENCY_MAX_ENTRIES:50000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [traceId=%X{traceId:-} correlationId=%X{correlationId:-} eventId=%X{eventId:-}] - %msg%n"
+  level:
+    com.pedidos360.notify: INFO

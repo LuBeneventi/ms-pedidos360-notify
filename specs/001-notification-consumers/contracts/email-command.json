@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EmailCommandMessage",
+  "description": "Mensaje publicado en la cola q.cmd.email para envío de notificaciones por correo electrónico",
+  "type": "object",
+  "required": ["type", "eventId", "timestamp", "traceId", "correlationId", "payload"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "example": "cmd.email.send"
+    },
+    "eventId": {
+      "type": "string",
+      "format": "uuid",
+      "example": "a3bb189e-8bf9-3888-9912-ace4e6543002"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2026-10-01T15:30:00Z"
+    },
+    "traceId": {
+      "type": "string",
+      "example": "4bf92f3577b34da6a3ce929d0e0e4736"
+    },
+    "correlationId": {
+      "type": "string",
+      "example": "corr-pedidos-8921"
+    },
+    "payload": {
+      "type": "object",
+      "required": ["to", "subject", "orderNumber"],
+      "properties": {
+        "to": {
+          "type": "string",
+          "format": "email",
+          "example": "cliente.cafe@example.com"
+        },
+        "subject": {
+          "type": "string",
+          "example": "Tu pedido #PED-1024 en Pedidos360 ha sido confirmado"
+        },
+        "orderNumber": {
+          "type": "string",
+          "example": "PED-1024"
+        },
+        "customerName": {
+          "type": "string",
+          "example": "Sofía Morales"
+        },
+        "newStatus": {
+          "type": "string",
+          "example": "CONFIRMADO"
+        },
+        "body": {
+          "type": "string",
+          "example": "¡Hola Sofía! Tu pedido de Café Grano Geisha ha sido recibido y se encuentra en preparación."
+        },
+        "templateParams": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}
